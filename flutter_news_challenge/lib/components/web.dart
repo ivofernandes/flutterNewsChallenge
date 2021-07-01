@@ -4,24 +4,26 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class Web extends StatefulWidget{
 
+  final String title;
   final String url;
 
-  Web._(this.url);
+  Web._(this.title, this.url);
 
   @override
   _WebState createState() => _WebState();
 
-  static openView(BuildContext context, String url) {
+  static openView(BuildContext context, String title, String url) {
     if (kIsWeb) {
       launchLink(context, url);
     } else {
       Navigator.of(context).push(
-          MaterialPageRoute<void>(builder: (BuildContext context) => Web._(url)));
+          MaterialPageRoute<void>(builder: (BuildContext context) => Web._(title, url)));
     }
   }
   static void launchLink(BuildContext context, String url) async {
@@ -56,10 +58,10 @@ class _WebState extends State<Web> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Web'),
+          title: Text(widget.title),
           // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
           actions: <Widget>[
-            NavigationControls(_controller.future)
+            NavigationControls(widget.url, _controller.future)
           ],
         ),
         // We're using a Builder here so we have a context that is below the Scaffold
@@ -106,21 +108,13 @@ class _WebState extends State<Web> {
   }
 }
 
-enum MenuOptions {
-  showUserAgent,
-  listCookies,
-  clearCookies,
-  addToCache,
-  listCache,
-  clearCache,
-  navigationDelegate,
-}
-
 class NavigationControls extends StatelessWidget {
-  const NavigationControls(this._webViewControllerFuture)
-      : assert(_webViewControllerFuture != null);
 
+  final String url;
   final Future<WebViewController> _webViewControllerFuture;
+
+  const NavigationControls(this.url, this._webViewControllerFuture)
+      : assert(_webViewControllerFuture != null);
 
   @override
   Widget build(BuildContext context) {
@@ -134,47 +128,16 @@ class NavigationControls extends StatelessWidget {
         return Row(
           children: <Widget>[
             IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              onPressed: !webViewReady
-                  ? null
-                  : () async {
-                if (await controller!.canGoBack()) {
-                  await controller.goBack();
-                } else {
-                  // ignore: deprecated_member_use
-                  Scaffold.of(context).showSnackBar(
-                    const SnackBar(content: Text("No back history item")),
-                  );
-                  return;
-                }
-              },
+              icon: const Icon(Icons.open_in_browser),
+              onPressed: () => Web.launchLink(context, url),
             ),
+
             IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: !webViewReady
-                  ? null
-                  : () async {
-                if (await controller!.canGoForward()) {
-                  await controller.goForward();
-                } else {
-                  // ignore: deprecated_member_use
-                  Scaffold.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text("No forward history item")),
-                  );
-                  return;
-                }
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.replay),
-              onPressed: !webViewReady
-                  ? null
-                  : () {
-                controller!.reload();
-              },
+              icon: const Icon(Icons.share),
+              onPressed: () => Share.share(this.url),
             ),
           ],
+
         );
       },
     );
