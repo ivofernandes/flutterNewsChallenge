@@ -8,8 +8,7 @@ class NavigationControls extends StatelessWidget {
   final String url;
   final Future<WebViewController> _webViewControllerFuture;
 
-  const NavigationControls(this.url, this._webViewControllerFuture)
-      : assert(_webViewControllerFuture != null);
+  const NavigationControls(this.url, this._webViewControllerFuture);
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +16,6 @@ class NavigationControls extends StatelessWidget {
       future: _webViewControllerFuture,
       builder:
           (BuildContext context, AsyncSnapshot<WebViewController> snapshot) {
-        final bool webViewReady =
-            snapshot.connectionState == ConnectionState.done;
-        final WebViewController? controller = snapshot.data;
         return Row(
           children: <Widget>[
             IconButton(

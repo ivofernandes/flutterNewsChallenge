@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_news_challenge/components/articleSnapshot.dart';
+import 'package:flutter_news_challenge/components/listArticlesComponent.dart';
 import 'package:flutter_news_challenge/data/model/article.dart';
 import 'package:flutter_news_challenge/data/state/appStateProvider.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class NewsScreen extends StatelessWidget {
@@ -12,39 +12,29 @@ class NewsScreen extends StatelessWidget {
         Provider.of<AppStateProvider>(context, listen: false);
     List<Article> newsList = appState.getNewsList();
 
+    final ScrollController _scrollController = ScrollController();
+
     return newsList.isEmpty
         ? Center(
             child: CircularProgressIndicator(),
           )
         : SingleChildScrollView(
+            controller: _scrollController,
             child: OrientationBuilder(builder: (context, orientation) {
-              double width = MediaQuery. of(context).size.width;
-              bool isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+              _scrollController.addListener(() {
+                var remaining = _scrollController.position.maxScrollExtent -
+                    _scrollController.position.pixels;
+                if (remaining < 1500) {
+                  appState.nextPage().then((hasNextValue) {
+                    if (hasNextValue) {
+                      appState.refresh();
+                    }
+                  });
+                }
+              });
 
-              return Container(
-                child: Column(
-                  children: <Widget>[
-                    GridView.builder(
-                        shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: isPortrait ? width : width/2,
-                            childAspectRatio: 1.3,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
-                        itemCount: newsList.length,
-                        itemBuilder: (BuildContext ctx, index) {
-                          return ArticleSnapshot(
-                            imgUrl: newsList[index].urlToImage ?? "",
-                            title: newsList[index].title ?? "",
-                            publishedAt: newsList[index].publshedAt == null ? '' : DateFormat('dd MMM kk:mm').format(newsList[index].publshedAt!),
-                            posturl: newsList[index].articleUrl ?? "",
-                          );
-                        }),
-                  ],
-                ),
-              );
-            }),
-          );
+              return ListArticleComponent(appState.getNewsList());
+        })
+    );
   }
 }

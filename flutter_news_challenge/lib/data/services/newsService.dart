@@ -12,19 +12,19 @@ class NewsService{
 
   static const String BASE_URL = 'newsapi.org';
   static const String API_KEY = 'e9f236f020e5427aa5f6b1ff104e955e';
-
   static const String TOP_HEADLINES = '/v2/top-headlines';
 
-  Future<List<Article>> getNews(String language) async{
-
+  Future<List<Article>> getNews(String language, int page) async{
+    print('getting page ' + page.toString());
     List<Article> news = [];
     // Example url:
     // https://newsapi.org/v2/top-headlines?country=us&sortBy=publishedAt&language=en&apiKey=e9f236f020e5427aa5f6b1ff104e955e
     var response = await http.get(Uri.https(BASE_URL, TOP_HEADLINES, {
-    'pageSize': '100',
+    'pageSize': '20',
     'sortBy': 'publishedAt',
     'language': language,
-    'apiKey': API_KEY
+    'apiKey': API_KEY,
+    'page': page.toString()
     }));
 
     if(response.statusCode == 200) {

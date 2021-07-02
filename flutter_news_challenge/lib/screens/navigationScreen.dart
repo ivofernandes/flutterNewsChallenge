@@ -14,15 +14,22 @@ class NavigationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     this._appState = Provider.of<AppStateProvider>(context, listen: false);
 
+    this._appState!.loadNews(context).then((gotValues){
+      if(gotValues) {
+        this._appState!.refresh();
+      }
+    });
+
     return Scaffold(
-        body: Center(
-          child: this._appState!.getCurrentScreen(),
-        ),
+        body: this._appState!.getCurrentScreen(),
         bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'News',
+              ),BottomNavigationBarItem(
+                icon: Icon(Icons.favorite),
+                label: 'Favorites',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),

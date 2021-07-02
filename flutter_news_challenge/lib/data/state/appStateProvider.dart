@@ -1,40 +1,23 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_news_challenge/data/model/article.dart';
-import 'package:flutter_news_challenge/data/services/newsService.dart';
 import 'package:flutter_news_challenge/data/state/settingsThemeState.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'favoritesState.dart';
 import 'navigationState.dart';
+import 'newsState.dart';
 
-class AppStateProvider with ChangeNotifier, NavigationState, SettingsThemeState{
+class AppStateProvider with ChangeNotifier, NavigationState, SettingsThemeState,
+    NewsState, FavoritesState{
   bool _isPreferencesReady = false;
 
-  String _deviceLanguage = '';
-
-  List<Article> _newsList = [];
-
   /// Init the state machine
-  AppStateProvider(BuildContext context){
-    final String defaultLocale = Platform.localeName;
-    this._deviceLanguage = defaultLocale.substring(0,2);
-
-    loadNews();
-  }
+  AppStateProvider(BuildContext context){}
 
   /// Repaint the app
   void refresh() {
     notifyListeners();
-  }
-
-  List<Article> getNewsList() {
-    return this._newsList;
-  }
-
-  void loadNews() async{
-    this._newsList = await NewsService().getNews(this._deviceLanguage);
-    refresh();
   }
 
   void loadPreferences(BuildContext context) async {
@@ -43,9 +26,11 @@ class AppStateProvider with ChangeNotifier, NavigationState, SettingsThemeState{
       if(this.loadThemePreferences(prefs, context)){
         this.refresh();
       }
+
+      this.loadFavorites(prefs);
+
       _isPreferencesReady = true;
     }
   }
 
 }
-

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news_challenge/screens/favoriteScreen.dart';
 import 'package:flutter_news_challenge/screens/newsScreen.dart';
 import 'package:flutter_news_challenge/screens/settingsScreen.dart';
 
@@ -12,6 +13,8 @@ class NavigationState {
     switch(this._currentScreen){
       case 0:
         return NewsScreen();
+      case 1:
+        return FavoriteScreen();
       default:
         return SettingsScreen();
     }
