@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_news_challenge/components/web.dart';
+import 'package:flutter_news_challenge/components/webview/web.dart';
 
 class ArticleSnapshot extends StatelessWidget {
   final String imgUrl;

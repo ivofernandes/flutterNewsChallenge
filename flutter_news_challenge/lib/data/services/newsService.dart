@@ -15,16 +15,15 @@ class NewsService{
 
   static const String TOP_HEADLINES = '/v2/top-headlines';
 
-  Future<List<Article>> getNews() async{
+  Future<List<Article>> getNews(String language) async{
 
     List<Article> news = [];
     // Example url:
     // https://newsapi.org/v2/top-headlines?country=us&sortBy=publishedAt&language=en&apiKey=e9f236f020e5427aa5f6b1ff104e955e
     var response = await http.get(Uri.https(BASE_URL, TOP_HEADLINES, {
-    'country':'us',
     'pageSize': '100',
     'sortBy': 'publishedAt',
-    'language': 'en',
+    'language': language,
     'apiKey': API_KEY
     }));
 

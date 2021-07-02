@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
         create: (_) => AppStateProvider(context),
         child: Consumer<AppStateProvider>(
             builder: (context, appState, child) {
-              ThemeData theme = appState.getTheme();
+
+              appState.loadPreferences(context);
+              ThemeData theme = appState.getTheme(context);
 
               return MaterialApp(
                   theme: theme,
