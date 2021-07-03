@@ -15,6 +15,7 @@ class NavigationScreen extends StatelessWidget {
     this._appState = Provider.of<AppStateProvider>(context, listen: false);
 
     this._appState!.loadNews(context).then((gotValues){
+      // Repaint the app if the store changed
       if(gotValues) {
         this._appState!.refresh();
       }

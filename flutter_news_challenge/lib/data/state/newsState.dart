@@ -14,8 +14,8 @@ class NewsState {
   }
 
   Future<bool> loadNews(BuildContext context) async{
-    if(this._newsList.isEmpty) {
-
+    if(this._newsList.isEmpty && !_loading) {
+      _loading = true;
       this._newsList = await NewsService().getNews(_deviceLanguage, _page);
 
       if (this._newsList.isEmpty) {
@@ -32,15 +32,18 @@ class NewsState {
               ),
             )
         ));
+
+        _loading = false;
         return false;
       }
+      _loading = false;
       return true;
     }
-    return true;
+    _loading = false;
+    return false;
   }
 
   Future<bool> nextPage() async{
-    print('next');
     if(_page > 0 && !_loading){
       _loading = true;
       _page++;

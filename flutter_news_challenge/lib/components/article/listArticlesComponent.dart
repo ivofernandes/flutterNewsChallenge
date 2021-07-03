@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_news_challenge/components/articleSnapshot.dart';
+import 'package:flutter_news_challenge/components/article/articleSnapshot.dart';
 import 'package:flutter_news_challenge/data/model/article.dart';
 
 class ListArticleComponent extends StatelessWidget {

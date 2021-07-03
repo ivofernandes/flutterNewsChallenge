@@ -15,7 +15,6 @@ class NewsService{
   static const String TOP_HEADLINES = '/v2/top-headlines';
 
   Future<List<Article>> getNews(String language, int page) async{
-    print('getting page ' + page.toString());
     List<Article> news = [];
     // Example url:
     // https://newsapi.org/v2/top-headlines?country=us&sortBy=publishedAt&language=en&apiKey=e9f236f020e5427aa5f6b1ff104e955e
@@ -35,7 +34,7 @@ class NewsService{
             Article article = Article(
               title: element['title'],
               urlToImage: element['urlToImage'],
-              publshedAt: DateTime.parse(element['publishedAt']),
+              publishedAt: DateTime.parse(element['publishedAt']),
               articleUrl: element['url'],
             );
             news.add(article);

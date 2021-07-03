@@ -6,6 +6,8 @@ import 'package:flutter_news_challenge/data/state/appStateProvider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import 'articleFooter.dart';
+
 class ArticleSnapshot extends StatelessWidget {
   final Article article;
 
@@ -13,12 +15,9 @@ class ArticleSnapshot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppStateProvider appState =
-    Provider.of<AppStateProvider>(context, listen: false);
 
     String imgUrl = article.urlToImage ?? "";
     String title = article.title ?? "";
-    String publishedAt = article.publshedAt == null ? '' : DateFormat('dd MMM kk:mm').format(article.publshedAt!);
     String articleUrl = article.articleUrl ?? "";
 
     return GestureDetector(
@@ -64,29 +63,7 @@ class ArticleSnapshot extends StatelessWidget {
                           errorWidget: (context, url, error) => Icon(Icons.error),
                         )
                     ),
-                    SizedBox(height: 10),
-                    SizedBox(
-                      height:60,
-                      child: Text(
-                        title,
-                        maxLines: 2,
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(publishedAt),
-                        GestureDetector(
-                            onTap: () => appState.toogleFavorite(article),
-                            child: Icon(
-                                Icons.favorite,
-                                color: appState.isFavorited(article) ? Colors.red : null,
-                            )
-                        )
-                      ],
-                    )
+                    ArticleFooter(article)
                   ],
                 ),
               ),

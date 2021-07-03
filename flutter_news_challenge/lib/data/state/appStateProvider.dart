@@ -27,7 +27,7 @@ class AppStateProvider with ChangeNotifier, NavigationState, SettingsThemeState,
         this.refresh();
       }
 
-      this.loadFavorites(prefs);
+      this.loadFavorites();
 
       _isPreferencesReady = true;
     }

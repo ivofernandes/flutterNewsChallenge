@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_news_challenge/components/listArticlesComponent.dart';
+import 'package:flutter_news_challenge/components/article/listArticlesComponent.dart';
 import 'package:flutter_news_challenge/data/model/article.dart';
 import 'package:flutter_news_challenge/data/state/appStateProvider.dart';
 import 'package:provider/provider.dart';

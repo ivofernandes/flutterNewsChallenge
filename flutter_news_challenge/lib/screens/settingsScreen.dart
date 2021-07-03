@@ -31,28 +31,36 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 40),
                 Text('App theme'),
-                SizedBox(height: 20),
+                SizedBox(height: 0),
                 Row(
                   children: SettingsThemeState.AVAILABLE_THEMES
                       .map((theme) => SizedBox(
-                          height: 30,
+                          height: 60,
                           width: (width - 20) / 3,
                           child: GestureDetector(
                             onTap: (){
                               appState.updateTheme(theme);
                               appState.refresh();
                             },
-                            child: Row(
-                              children: [
-                                Radio(
-                                    value: theme,
-                                    groupValue: appState.getLayout(),
-                                    onChanged: (newTheme) {
-                                      appState.updateTheme(theme);
-                                      appState.refresh();
-                                    }),
-                                Text(theme),
-                              ],
+                            child: Container(
+                              // This hack of zero opacity color is just for the container,
+                              // that covers the button with defined by the parent sizedbox,
+                              // to be really clickable
+                              // ---->
+                              color: Colors.green.withOpacity(0.0),
+                              // <-----
+                              child: Row(
+                                children: [
+                                  Radio(
+                                      value: theme,
+                                      groupValue: appState.getLayout(),
+                                      onChanged: (newTheme) {
+                                        appState.updateTheme(theme);
+                                        appState.refresh();
+                                      }),
+                                  Text(theme),
+                                ],
+                              ),
                             ),
                           )))
                       .toList(),
