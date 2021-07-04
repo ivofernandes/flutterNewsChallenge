@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_news_challenge/data/state/appStateProvider.dart';
-import 'package:flutter_news_challenge/data/state/settingsThemeState.dart';
+import 'package:flutter_news_challenge/data/state/settings/settingsThemeState.dart';
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {

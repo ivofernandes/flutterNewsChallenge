@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:flutter_news_challenge/data/model/article.dart';
 import 'package:flutter_news_challenge/data/store/newsStorage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritesState{
 
@@ -24,7 +23,6 @@ class FavoritesState{
   }
 
   List<Article> getAllFavorites(){
-    print('num fav: ' +  _favorites.toList().length.toString());
     return _favorites.toList();
   }
 
@@ -33,11 +31,8 @@ class FavoritesState{
 
     List<Article> storedFavorites = await NewsStorage().getFavoritesList();
 
-    print('favorites: ' + storedFavorites.length.toString());
-
     storedFavorites.forEach((article) {
       this._favorites.add(article);
-      print('added favorite');
     });
   }
 

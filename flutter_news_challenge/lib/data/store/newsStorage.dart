@@ -10,7 +10,7 @@ class NewsStorage with SembastDatabase{
   }
   NewsStorage._internal();
 
-  static final String STORE_FAVORITES = 'favorites';
+  static const String STORE_FAVORITES = 'favorites';
 
   /// Get the favorites available in the device
   Future<List<Article>> getFavoritesList() async{
@@ -32,10 +32,8 @@ class NewsStorage with SembastDatabase{
   removeFavorite(Article article) async {
     var store = intMapStoreFactory.store(STORE_FAVORITES);
 
-    int deleted = await store.delete(getDatabase(),
+    await store.delete(getDatabase(),
         finder: Finder(filter: Filter.byKey(article.id)));
-
-    print('deleted ' + deleted.toString());
   }
 
   Future<int> addFavorite(Article article) async{

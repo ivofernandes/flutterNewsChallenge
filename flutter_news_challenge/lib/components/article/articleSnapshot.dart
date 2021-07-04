@@ -2,9 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_news_challenge/components/webview/web.dart';
 import 'package:flutter_news_challenge/data/model/article.dart';
-import 'package:flutter_news_challenge/data/state/appStateProvider.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 import 'articleFooter.dart';
 

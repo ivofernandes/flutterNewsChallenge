@@ -1,19 +1,22 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_news_challenge/data/state/settingsThemeState.dart';
+import 'package:flutter_news_challenge/data/state/connectivityState.dart';
+import 'package:flutter_news_challenge/data/state/settings/settingsThemeState.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'favoritesState.dart';
+import 'article/favoritesState.dart';
 import 'navigationState.dart';
-import 'newsState.dart';
+import 'article/newsState.dart';
 
 class AppStateProvider with ChangeNotifier, NavigationState, SettingsThemeState,
-    NewsState, FavoritesState{
+    NewsState, FavoritesState , ConnectivityState{
   bool _isPreferencesReady = false;
 
   /// Init the state machine
-  AppStateProvider(BuildContext context){}
+  AppStateProvider(BuildContext context){
+    initConnectivity().then((value) {
+      this.refresh();
+    });
+  }
 
   /// Repaint the app
   void refresh() {

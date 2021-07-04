@@ -9,9 +9,9 @@ import 'package:provider/provider.dart';
 /// and all is in a stack so the favorite button
 /// can override a bit of the title space to make it bigger and more clickable
 class ArticleFooter extends StatelessWidget {
-  Article article;
+  final Article article;
 
-  ArticleFooter(this.article);
+  const ArticleFooter(this.article);
 
   @override
   Widget build(BuildContext context) {

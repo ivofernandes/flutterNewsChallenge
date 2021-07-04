@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
                   title: "Flutter News Challenge",
                   home: SafeArea(
                     child: Scaffold(
-                        body: NavigationScreen()
+                        body: NavigationScreen(appState)
                     ),
                   )
               );

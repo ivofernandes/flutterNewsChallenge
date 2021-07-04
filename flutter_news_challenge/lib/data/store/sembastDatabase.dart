@@ -6,7 +6,7 @@ import 'package:sembast_web/sembast_web.dart';
 import 'package:path/path.dart';
 
 class SembastDatabase{
-  static final String DB_NAME = 'news';
+  static const String DB_NAME = 'news';
 
   Database? _db;
 

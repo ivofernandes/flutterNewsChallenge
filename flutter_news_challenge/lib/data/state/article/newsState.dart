@@ -2,25 +2,36 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_news_challenge/data/model/article.dart';
 import 'package:flutter_news_challenge/data/services/newsService.dart';
+import 'package:provider/provider.dart';
+
+import '../appStateProvider.dart';
 
 class NewsState {
   List<Article> _newsList = [];
   int _page = 1;
   String _deviceLanguage = Platform.localeName.substring(0,2);
-  bool _loading = false;
+  bool _initialLoading = false;
+  bool _loadingNext = false;
 
   List<Article> getNewsList() {
     return this._newsList;
   }
 
-  Future<bool> loadNews(BuildContext context) async{
-    if(this._newsList.isEmpty && !_loading) {
-      _loading = true;
-      this._newsList = await NewsService().getNews(_deviceLanguage, _page);
+  Future<bool> loadNews(BuildContext context, bool hasInternetConnection) async{
+    if(this._newsList.isEmpty && !_initialLoading) {
+      this._initialLoading = true;
 
+      if(hasInternetConnection) {
+        this._newsList =
+        await NewsService().getNews(_deviceLanguage, 1).onError(
+                (error, stackTrace) async =>
+            this._newsList = await NewsService().getOfflineNews());
+      }else{
+        this._newsList = await NewsService().getOfflineNews();
+      }
       if (this._newsList.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text('Error requesting, try again later',
+            content: Text('Error getting news, try again later',
               style: Theme
                   .of(context)
                   .textTheme
@@ -33,23 +44,27 @@ class NewsState {
             )
         ));
 
-        _loading = false;
+        this._initialLoading = false;
         return false;
       }
-      _loading = false;
+      this._initialLoading = false;
       return true;
     }
-    _loading = false;
     return false;
   }
 
-  Future<bool> nextPage() async{
-    if(_page > 0 && !_loading){
-      _loading = true;
-      _page++;
+  Future<bool> nextPage(BuildContext context) async{
+    if(this._page > 0 && !_loadingNext){
+      this._loadingNext = true;
+      // Repaint when the main thread
+      AppStateProvider appState =
+      Provider.of<AppStateProvider>(context, listen: false);
+      appState.refresh();
+
+      this._page++;
       List<Article> nextNewsList = await NewsService().getNews(_deviceLanguage, _page);
 
-      _loading = false;
+      this._loadingNext = false;
 
       // If reached the end of the API stop with the next requests
       if(nextNewsList.isEmpty){
@@ -62,5 +77,9 @@ class NewsState {
       }
     }
     return false;
+  }
+
+  bool isLoadingNext(){
+    return this._loadingNext;
   }
 }

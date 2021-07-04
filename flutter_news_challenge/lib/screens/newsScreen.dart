@@ -25,7 +25,7 @@ class NewsScreen extends StatelessWidget {
                 var remaining = _scrollController.position.maxScrollExtent -
                     _scrollController.position.pixels;
                 if (remaining < 1500) {
-                  appState.nextPage().then((hasNextValue) {
+                  appState.nextPage(context).then((hasNextValue) {
                     if (hasNextValue) {
                       appState.refresh();
                     }
@@ -33,7 +33,15 @@ class NewsScreen extends StatelessWidget {
                 }
               });
 
-              return ListArticleComponent(appState.getNewsList());
+              return Column(
+                children: [
+                  ListArticleComponent(appState.getNewsList()),
+                  appState.isLoadingNext() ? Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: CircularProgressIndicator(),
+                  ) : Container()
+                ],
+              );
         })
     );
   }
